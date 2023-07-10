@@ -6,6 +6,14 @@
 #include <cmath>
 #include <algorithm>
 using namespace std;
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode* next) : val(x), next(next) {}   
+};
+
 class Solution {
 public:
     //1 两数之和
@@ -21,6 +29,26 @@ public:
                 }
         return temp;
     };
+    //2 两数相加
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        auto node = new ListNode(-1);
+        auto cur = node;
+        int t1 = 0;//为0标签
+        while (l1 != NULL || l2 != NULL || t1) {
+            int a1 = 0;
+            int a2 = 0;
+            if (l1 != NULL) { a1 = l1->val; l1 = l1->next; }
+            if (l2 != NULL) {
+                a2 = l2->val;
+                l2 = l2->next;
+            }
+            cur->next = new ListNode((a1 + a2 + t1) % 10);
+            t1 = (a1 + a2 + t1) / 10;
+            cur = cur->next;
+        }
+        return node->next;
+    
+    }
     //4 寻找两个正序数组的中位数1
     double findMedianSortedArrays1(vector<int>& nums1, vector<int>& nums2) {
         int size = nums1.size() + nums2.size();
@@ -144,7 +172,6 @@ public:
 int main()
 {
     Solution solution;
-
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
