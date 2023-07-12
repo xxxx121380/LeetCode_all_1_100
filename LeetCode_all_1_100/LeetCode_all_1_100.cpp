@@ -5,6 +5,9 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <string>
+#include <regex>
+#include <unordered_map>
 using namespace std;
 struct ListNode {
     int val;
@@ -117,7 +120,44 @@ public:
         }
         return result;
     }
+    //9 回文数
+    bool isPalindrome(int x) {
+        if (x < 0)return false;
+        string numStr = to_string(x);
+        int length = numStr.length();
+        int i = 0;
+        while (i < length / 2) {
+            if (numStr[i] != numStr[length-1 - i])return false;
+            i++;
+        }
+        return true;
+    }
+    //13 罗马数字转整数
+    int romanToInt(string s) {
+        unordered_map<char, int> romanMap = {
+            {'I', 1},
+            {'V', 5},
+            {'X', 10},
+            {'L', 50},
+            {'C', 100},
+            {'D', 500},
+            {'M', 1000}
+        };
+        int result = 0;
+        int prevValue = 0; 
+        for (char ch : s) {
+            int currValue = romanMap[ch];
+            if (currValue > prevValue) {
+                result += currValue - 2 * prevValue;
+            }
+            else {
+                result += currValue;
+            }
+            prevValue = currValue;
+        }
 
+        return result;
+    }
     //16 最接近三数的和
     int threeSumClosest(vector<int>& nums, int target) {
         sort(nums.begin(), nums.end());
@@ -172,6 +212,7 @@ public:
 int main()
 {
     Solution solution;
+    solution.isPalindrome(11);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
