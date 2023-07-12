@@ -208,11 +208,32 @@ public:
         }
         return low;
     }
+    //66 加一
+    vector<int> plusOne(vector<int>& digits) {
+        int size = digits.size();
+        if (digits[size - 1] != 9) {
+            digits[size - 1]++;
+            return digits;
+        }
+        else {
+            vector<int> result;
+            result.push_back((digits[size-1] + 1) % 10);
+            int t = (digits[size - 1] + 1) / 10;
+            for (int i = size - 2; i >= 0; i--) {
+                int s = digits[i] + t;
+                result.insert(result.begin(), s % 10);
+                t = s / 10;
+            }
+            if(t==1)result.insert(result.begin(), t);
+            return result;
+        }
+    }
 };
 int main()
 {
     Solution solution;
-    solution.isPalindrome(11);
+    vector<int> t = { 9,9 };
+    solution.plusOne(t);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
