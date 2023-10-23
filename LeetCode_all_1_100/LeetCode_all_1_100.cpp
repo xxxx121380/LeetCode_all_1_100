@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
 #include <cmath>
 #include <algorithm>
 using namespace std;
@@ -53,6 +54,38 @@ public:
         }
         return result;
     }
+
+    //20 有效的括号
+    bool isValid(string s) {
+        int l = s.length();
+        if (l % 2==1)return false;
+        stack<char> inStack;
+        for (int i = 0; i < l; i++) {
+            if (s[i] == '(' || s[i] == '[' || s[i] == '{')           
+                inStack.push(s[i]);
+            else {
+                if (inStack.size()!=0&&(inStack.top()+1==s[i] ||inStack.top()+2== s[i]))
+                    inStack.pop();
+                else return false;
+            }
+        }
+        if (inStack.size() == 0)return true;
+        else return false;
+    }
+
+    //27 移除元素
+    int removeElement(vector<int>& nums, int val) {
+        vector<int>::iterator it = nums.begin();
+        while (it != nums.end()) {
+            if (*it == val) {
+                it = nums.erase(it);
+            }
+            else {
+                it++;
+            }
+        }
+        return nums.size();
+    }
     //35 搜索插入位置
     int searchInsert(vector<int>& nums, int target) {
         int low = 0;
@@ -74,7 +107,11 @@ public:
 };
 int main()
 {
-    std::cout << "Hello World!\n";
+    Solution solution;
+    vector<int> nums = { 3,2,2,3 };
+    int val = 3;
+    cout << solution.removeElement(nums, val);
+    return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
