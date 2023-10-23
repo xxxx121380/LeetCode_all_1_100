@@ -9,6 +9,9 @@
 #include <string>
 #include <regex>
 #include <unordered_map>
+#include <limits>
+#include <stdexcept>
+
 using namespace std;
 struct ListNode {
     int val;
@@ -51,7 +54,6 @@ public:
             cur = cur->next;
         }
         return node->next;
-    
     }
     //4 寻找两个正序数组的中位数1
     double findMedianSortedArrays1(vector<int>& nums1, vector<int>& nums2) {
@@ -120,6 +122,21 @@ public:
 
         }
         return result;
+    }
+    //7 整数翻转
+    //without limit, we can use stol
+    int reverse(int x) {
+        bool sign = x < 0;
+        x = abs(x);
+        string str=to_string(x);
+        std::reverse(str.begin(), str.end());
+        if (str.size()>10)return 0;
+        if (str.size() == 10)
+        {
+            if (!sign && str > "2147483647") return 0;
+            if (sign && str > "2147483648") return 0;
+        }
+        return sign ? -1 * stoi(str) : stoi(str);
     }
     //9 回文数
     bool isPalindrome(int x) {
@@ -191,7 +208,6 @@ public:
         }
         return result;
     }
-
     //20 有效的括号
     bool isValid(string s) {
         int l = s.length();
@@ -209,7 +225,27 @@ public:
         if (inStack.size() == 0)return true;
         else return false;
     }
-
+    //21 合并两个有序链表
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        if (list1 == NULL) return list2;
+        if (list2 == NULL) return list1;
+        auto node = new ListNode(-1);
+        auto cur = node;
+        while (list1 != NULL || list2 != NULL) {
+            if (list2 == NULL || (list1!=NULL && list1->val <= list2->val))
+            {
+                cur->next = new ListNode(list1->val);
+                list1 = list1->next;
+            }
+            else if (list1 == NULL ||(list2 != NULL && list1->val >= list2->val))
+            {
+                cur->next = new ListNode(list2->val);
+                list2 = list2->next;
+            }
+            cur = cur->next;
+        }
+        return node->next;
+    }
     //27 移除元素
     int removeElement(vector<int>& nums, int val) {
         vector<int>::iterator it = nums.begin();
@@ -265,9 +301,6 @@ public:
 int main()
 {
     Solution solution;
-    vector<int> nums = { 3,2,2,3 };
-    int val = 3;
-    cout << solution.removeElement(nums, val);
     return 0;
 }
 
