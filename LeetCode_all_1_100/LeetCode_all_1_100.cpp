@@ -6,7 +6,18 @@
 #include <stack>
 #include <cmath>
 #include <algorithm>
+#include <string>
+#include <regex>
+#include <unordered_map>
 using namespace std;
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode* next) : val(x), next(next) {}   
+};
+
 class Solution {
 public:
     //1 两数之和
@@ -22,6 +33,132 @@ public:
                 }
         return temp;
     };
+    //2 两数相加
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        auto node = new ListNode(-1);
+        auto cur = node;
+        int t1 = 0;//为0标签
+        while (l1 != NULL || l2 != NULL || t1) {
+            int a1 = 0;
+            int a2 = 0;
+            if (l1 != NULL) { a1 = l1->val; l1 = l1->next; }
+            if (l2 != NULL) {
+                a2 = l2->val;
+                l2 = l2->next;
+            }
+            cur->next = new ListNode((a1 + a2 + t1) % 10);
+            t1 = (a1 + a2 + t1) / 10;
+            cur = cur->next;
+        }
+        return node->next;
+    
+    }
+    //4 寻找两个正序数组的中位数1
+    double findMedianSortedArrays1(vector<int>& nums1, vector<int>& nums2) {
+        int size = nums1.size() + nums2.size();
+        int targetIndex = size / 2;
+        int i = 0;
+        int j = 0;
+        int current=0;
+        int previous=0;
+        while (i + j <= targetIndex) {
+            previous = current;
+            if (i < nums1.size() && (j >= nums2.size() || nums1[i] <= nums2[j])) {
+                current = nums1[i];
+                i++;
+            }
+            else {
+                current = nums2[j];
+                j++;
+            }
+        }
+        double result;
+        if (size % 2 == 0) {
+            result = (previous + current) / 2.0;
+        }
+        else {
+            result = current;
+        }
+        return result;
+    }    
+    //4 寻找两个正序数组的中位数2
+    double findMedianSortedArrays2(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> merged;
+        merged.reserve(nums1.size() + nums2.size());
+        int size = nums1.size() + nums2.size();
+        int i = 0;
+        int j = 0;
+
+        while (i < nums1.size() && j < nums2.size()) {
+            if (i + j > size / 2)break;
+            if (nums1[i] <= nums2[j]) {
+                merged.push_back(nums1[i]);
+                i++;
+            }
+            else {
+                merged.push_back(nums2[j]);
+                j++;
+            }
+        }
+        while (i < nums1.size()) {
+            if (i + j > size / 2)break;
+            merged.push_back(nums1[i]);
+            i++;
+        }
+        while (j < nums2.size()) {
+            if (i + j > size / 2)break;
+            merged.push_back(nums2[j]);
+            j++;
+        }
+        double result;
+        if (size % 2 == 0) {
+            result = (merged[i + j - 1] + merged[i + j - 2]) / 2.0;
+        }
+        else
+        {
+            result = merged[i + j - 1];
+
+        }
+        return result;
+    }
+    //9 回文数
+    bool isPalindrome(int x) {
+        if (x < 0)return false;
+        string numStr = to_string(x);
+        int length = numStr.length();
+        int i = 0;
+        while (i < length / 2) {
+            if (numStr[i] != numStr[length-1 - i])return false;
+            i++;
+        }
+        return true;
+    }
+    //13 罗马数字转整数
+    int romanToInt(string s) {
+        unordered_map<char, int> romanMap = {
+            {'I', 1},
+            {'V', 5},
+            {'X', 10},
+            {'L', 50},
+            {'C', 100},
+            {'D', 500},
+            {'M', 1000}
+        };
+        int result = 0;
+        int prevValue = 0; 
+        for (char ch : s) {
+            int currValue = romanMap[ch];
+            if (currValue > prevValue) {
+                result += currValue - 2 * prevValue;
+            }
+            else {
+                result += currValue;
+            }
+            prevValue = currValue;
+        }
+
+        return result;
+    }
     //16 最接近三数的和
     int threeSumClosest(vector<int>& nums, int target) {
         sort(nums.begin(), nums.end());
@@ -103,6 +240,26 @@ public:
             }
         }
         return low;
+    }
+    //66 加一
+    vector<int> plusOne(vector<int>& digits) {
+        int size = digits.size();
+        if (digits[size - 1] != 9) {
+            digits[size - 1]++;
+            return digits;
+        }
+        else {
+            vector<int> result;
+            result.push_back((digits[size-1] + 1) % 10);
+            int t = (digits[size - 1] + 1) / 10;
+            for (int i = size - 2; i >= 0; i--) {
+                int s = digits[i] + t;
+                result.insert(result.begin(), s % 10);
+                t = s / 10;
+            }
+            if(t==1)result.insert(result.begin(), t);
+            return result;
+        }
     }
 };
 int main()
