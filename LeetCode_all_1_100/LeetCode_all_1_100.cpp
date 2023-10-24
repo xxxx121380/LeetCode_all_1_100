@@ -123,6 +123,27 @@ public:
         }
         return result;
     }
+    //5 最长回文子串
+    string longestPalindrome(string s) {
+        int length = s.length();
+        for (int i = length; i > 1; i--)
+        {
+            for (int j = 0; j <= length - i; j++)
+            {
+                bool flag = true;
+                for (int k = 0; k < i/2; k++) {
+                    if (s[j+k] != s[j+i - k-1])
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag == false)continue;
+                else return s.substr(j, i);
+            }
+        }
+        return s.substr(0,1);
+    }
     //7 整数翻转
     //without limit, we can use stol
     int reverse(int x) {
@@ -301,6 +322,9 @@ public:
 int main()
 {
     Solution solution;
+    string s = "babad";
+
+    cout << solution.longestPalindrome(s);
     return 0;
 }
 
