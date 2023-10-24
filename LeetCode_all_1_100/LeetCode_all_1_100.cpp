@@ -171,6 +171,24 @@ public:
         }
         return true;
     }
+    //11 盛最多水的容器 
+    int maxArea(vector<int>& height) {
+        int left = 0;
+        int right = height.size() - 1;
+        int maxA = 0;
+        while (left < right) {
+            int minHeight = std::min(height[left], height[right]);
+            int width = right - left;
+            maxA = max(maxA, minHeight * width);
+            if (height[left] < height[right]) {
+                left++;
+            }
+            else {
+                right--;
+            }
+        }
+        return maxA;
+    }
     //13 罗马数字转整数
     int romanToInt(string s) {
         unordered_map<char, int> romanMap = {
@@ -196,6 +214,32 @@ public:
         }
 
         return result;
+    }
+    //14 最长公共前缀
+    string longestCommonPrefix(vector<string>& strs) {
+        string min;
+        auto shortest = std::min_element(strs.begin(), strs.end(), [](const string& s1, const string& s2) {
+            return s1.length() < s2.length();
+            });
+        if (shortest != strs.end()) {
+            min = *shortest;
+        }
+        else return "";
+        for (int i = min.size(); i > 0; i--)
+        {
+            bool flag = true;
+            string ss = min.substr(0, i);
+            for (const string& str : strs) {
+                if (!std::equal(ss.begin(),ss.end(), str.begin(), str.begin() + i)) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                return min.substr(0, i);
+            }
+        }
+        return "";
     }
     //16 最接近三数的和
     int threeSumClosest(vector<int>& nums, int target) {
@@ -322,9 +366,9 @@ public:
 int main()
 {
     Solution solution;
-    string s = "babad";
+    vector<int> ss = { 1,8,6,2,5,4,8,3,7 };
 
-    cout << solution.longestPalindrome(s);
+    cout << solution.maxArea(ss);
     return 0;
 }
 
