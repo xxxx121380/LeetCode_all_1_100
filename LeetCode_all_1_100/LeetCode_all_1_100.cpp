@@ -311,6 +311,19 @@ public:
         }
         return node->next;
     }
+    //26 删除有序数组中的重复项
+    int removeDuplicates(vector<int>& nums) {
+        vector<int> t;
+        t.push_back(nums[0]);
+        for (int i = 1; i < nums.size(); i++)
+        {
+            if (t[t.size()-1]!=nums[i]) {
+                t.push_back(nums[i]);
+            }
+        }
+        nums = t;
+        return t.size();
+    }
     //27 移除元素
     int removeElement(vector<int>& nums, int val) {
         vector<int>::iterator it = nums.begin();
