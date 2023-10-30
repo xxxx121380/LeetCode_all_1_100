@@ -375,6 +375,35 @@ public:
             return result;
         }
     }
+    //67 二进制求和
+    string addBinary(string a, string b) {
+        int al = a.size();
+        int bl = b.size();
+        bool flag = false;
+        string result;
+        while (al >= 0 || bl >= 0)
+        {
+            if (a[al] == b[bl])
+            {
+                
+            }
+            result=a[al]+b[bl]
+        }
+    }
+    //83 删除排序链表中的重复元素
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (head == NULL) return NULL;
+        auto node = new ListNode(-1);
+        auto cur = node;
+        while (head != NULL) {
+            if (cur == node || cur->val != head->val) {
+                cur->next = new ListNode(head->val);
+                cur = cur->next;
+            }
+            head = head->next;
+        }
+        return node->next;
+    }
 };
 int main()
 {
