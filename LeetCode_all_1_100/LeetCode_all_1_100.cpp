@@ -387,12 +387,27 @@ public:
             {
                 
             }
-            result=a[al]+b[bl]
+            result = a[al] + b[bl];
         }
     }
     //69 x 的平方根 实际上是考你二分
     int mySqrt(int x) {
-        return floor(sqrt(x));
+        int left = 0;
+        int right = x;
+        long mid = 0;
+        while (left <= right)
+        {
+            mid = (left + right) / 2;
+            if (mid * mid > x) {
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1;
+            }
+        }
+        if (mid * mid <= x)return mid;
+        else return mid-1;
+        //return floor(sqrt(x));
     }
     //70 爬楼梯 看似斐波那契数列，实际上是DP的基础形式
     int climbStairs(int n) {
@@ -427,7 +442,7 @@ int main()
     Solution solution;
     vector<int> ss = { 1,8,6,2,5,4,8,3,7 };
 
-    cout << solution.maxArea(ss);
+    cout << solution.mySqrt(5);
     return 0;
 }
 
