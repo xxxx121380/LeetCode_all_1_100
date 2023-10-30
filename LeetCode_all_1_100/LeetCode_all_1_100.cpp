@@ -394,7 +394,7 @@ public:
     int mySqrt(int x) {
         return floor(sqrt(x));
     }
-    //70 爬楼梯
+    //70 爬楼梯 看似斐波那契数列，实际上是DP的基础形式
     int climbStairs(int n) {
         if (n == 1) return 1;
         int a = 1;
