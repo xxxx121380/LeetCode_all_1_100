@@ -390,6 +390,14 @@ public:
             result=a[al]+b[bl]
         }
     }
+    //69 x 的平方根 实际上是考你二分
+    int mySqrt(int x) {
+        return floor(sqrt(x));
+    }
+    //70 爬楼梯
+    int climbStairs(int n) {
+
+    }
     //83 删除排序链表中的重复元素
     ListNode* deleteDuplicates(ListNode* head) {
         if (head == NULL) return NULL;
