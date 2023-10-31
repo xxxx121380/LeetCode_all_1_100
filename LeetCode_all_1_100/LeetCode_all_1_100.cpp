@@ -337,6 +337,18 @@ public:
         }
         return nums.size();
     }
+    //28 找出字符串中第一个匹配项的下标
+    int strStr(string haystack, string needle) {
+        if (needle.length() > haystack.length())return -1;
+        bool flag = false;
+        size_t pos = haystack.find(needle);
+        if (pos != std::string::npos) {
+            return pos;
+        }
+        else {
+            return -1;
+        }
+    }
     //35 搜索插入位置
     int searchInsert(vector<int>& nums, int target) {
         int low = 0;
