@@ -375,6 +375,19 @@ public:
         }
         return low;
     }
+    //58 最后一个单词的长度
+    int lengthOfLastWord(string s) {
+            size_t first = s.find_first_not_of(' ');
+            size_t last = s.find_last_not_of(' ');
+            s=s.substr(first, (last - first + 1));
+            size_t pos = s.find_last_of(' ');
+            if (pos != std::string::npos) {
+                return s.length() - pos-1; 
+            }
+            else {
+                return s.length();
+            }
+    }
     //66 加一
     vector<int> plusOne(vector<int>& digits) {
         int size = digits.size();
@@ -468,8 +481,8 @@ int main()
 {
     Solution solution;
     vector<int> ss = { 1,8,6,2,5,4,8,3,7 };
-
-    cout << solution.mySqrt(5);
+    string s = " luffy is still joyboy ";
+    cout << solution.lengthOfLastWord(s);
     return 0;
 }
 
