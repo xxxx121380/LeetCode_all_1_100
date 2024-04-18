@@ -573,7 +573,81 @@ public:
         }
         return true;
     }
-
+    //54 螺旋矩阵
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int>result;
+        int up = 0;
+        int left = 0;
+        int down = matrix.size() - 1;
+        int right = matrix[0].size() - 1;
+        //只有一行
+        if (up == down)return matrix[0];
+        //只有一列
+        if (left == right) {
+            for (int i = 0; i <= down; i++) {
+                result.push_back(matrix[i][0]);
+            }
+            return result;
+        }
+        //有行有列，开始模拟
+        int seq = 0;
+        while (up != down && left != right) {
+            switch (seq)
+            {
+            case 0:
+            {
+                for (int i = left; i <= right; i++)
+                    result.push_back(matrix[up][i]);
+                up++;
+                seq++;
+                break;
+            }
+            case 1:
+            {
+                for (int i = up; i <= down; i++)
+                    result.push_back(matrix[i][right]);
+                right--;
+                seq++;
+                break;
+            }
+            case 2:
+            {
+                for (int i = right; i >= left; i--)
+                    result.push_back(matrix[down][i]);
+                down--;
+                seq++;
+                break;
+            }
+            case 3:
+            {
+                for (int i = down; i >= up; i--)
+                    result.push_back(matrix[i][left]);
+                left++;
+                seq = 0;
+                break;
+            }
+            }
+        }
+        //还有一列
+        if (up != down) {
+            if (seq == 0)
+                for (int i = up; i <= down; i++)
+                    result.push_back(matrix[i][right]);
+            if (seq == 2)
+                for (int i = down; i >= up; i--)
+                    result.push_back(matrix[i][left]);
+        }
+        //还有一行
+        if (left != right) {
+            if (seq == 3)
+                for (int i = left; i <= right; i++)
+                    result.push_back(matrix[up][i]);
+            if (seq == 1)
+                for (int i = right; i >= left; i--)
+                    result.push_back(matrix[down][i]);
+        }
+        return result;
+    }
     //58 最后一个单词的长度
     int lengthOfLastWord(string s) {
             size_t first = s.find_first_not_of(' ');
@@ -679,8 +753,8 @@ public:
 int main()
 {
     Solution solution;
-    vector<vector<char>>  test = { {'.', '.', '.', '.', '.', '3', '2', '.', '4'}, {'.', '.', '.', '.', '2', '.', '.', '.', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'}, {'.', '6', '.', '.', '.', '.', '7', '.', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'}, {'.', '.', '.', '.', '9', '.', '.', '.', '.'}, {'3', '.', '.', '1', '.', '.', '.', '8', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'} };
-    solution.isValidSudoku(test);
+    vector<vector<int>>  test = { {1,2,3,4} ,{5,6,7,8},{9,10,11,12},{13,14,15,16} };
+    solution.spiralOrder(test);
     //solution.divide(7,-3);
     return 0;
 }
