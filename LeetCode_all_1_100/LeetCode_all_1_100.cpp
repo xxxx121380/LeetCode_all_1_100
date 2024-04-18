@@ -486,6 +486,45 @@ public:
         }
         std::reverse(nums.begin()+flag,nums.end());
     }
+    //33 搜索旋转排序数组
+    //最小点就是旋转点
+    int findRotateLoc(vector<int>& nums, int left, int right) {
+        if (left == right)
+            return left;
+        int mid = left + (right - left) / 2;
+        if (nums[mid] > nums[right])  // 旋转点在右半部
+            return findRotateLoc(nums, mid + 1, right);
+        else  // 旋转点在左半部
+            return findRotateLoc(nums, left, mid);
+    }
+
+    int findLoc(vector<int>& nums, int left, int right, int target) {
+        if (left > right)
+            return -1;
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target)
+            return mid;
+        else if (nums[mid] > target)
+            return findLoc(nums, left, mid - 1, target);
+        else
+            return findLoc(nums, mid + 1, right, target);
+    }
+    int search(vector<int>& nums, int target) {
+        if (nums.size() == 1 && nums[0] == target)return 0;
+        if (nums.size() == 1 && nums[0] != target)return -1;
+        int left = 0;
+        int right = nums.size() - 1;
+        //先找旋转点
+        int rotateLoc = findRotateLoc(nums, left, right);
+        if (target == nums[rotateLoc]) return rotateLoc;
+        //判断target在旋转点左侧还是右侧后再次二分
+        if (rotateLoc == 0)  // 没有旋转
+            return findLoc(nums, left, right, target);
+        else if (target >= nums[0] && target <= nums[rotateLoc - 1])  // 目标在左侧
+            return findLoc(nums, 0, rotateLoc - 1, target);
+        else  // 目标在右侧
+            return findLoc(nums, rotateLoc, right, target);
+    }
     //35 搜索插入位置
     int searchInsert(vector<int>& nums, int target) {
         int low = 0;
