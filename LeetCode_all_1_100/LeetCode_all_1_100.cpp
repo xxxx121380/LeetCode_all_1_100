@@ -152,6 +152,35 @@ public:
         }
         return s.substr(0,1);
     }
+    //6 Z 字形变换
+    string convert(string s, int numRows) {
+        if (s.length() <= numRows || numRows == 1)return s;
+        string temp = "";
+        for (int i = 0; i < numRows; i++) {
+            int t = i;
+            temp += s[i];
+            int a1 = 2 * numRows - 2;
+            int a2 = 2 * i;
+            while (true) {
+                t = t + a1 - a2;
+                if (t < s.length())
+                {
+                    if (a1-a2 != 0) {
+                        temp += s[t];
+                    }
+                }
+                else break;
+                t = t +a2;
+                if (t < s.length()) {
+                    if (a2 != 0) {
+                        temp += s[t];
+                    }
+                }
+                else break;
+            }
+        }
+        return temp;
+    }
     //7 整数翻转
     //without limit, we can use stol
     int reverse(int x) {
@@ -166,6 +195,9 @@ public:
             if (sign && str > "2147483648") return 0;
         }
         return sign ? -1 * stoi(str) : stoi(str);
+    }
+    int myAtoi(string s) {
+
     }
     //9 回文数
     bool isPalindrome(int x) {
@@ -281,6 +313,33 @@ public:
         }
         return result;
     }
+    //17 电话号码的字母组合
+    vector<string> letterCombinations(string digits) {
+        vector<string> words;
+        string table[8] = { "abc","def","ghi","jkl","mno","pqrs","tuv","wxyz" };
+        if (digits.length() == 0)return words;
+        for (int i = 0; i < digits.length(); i++) {
+            int t = digits[i] - '2';
+            vector<string> tempWords=move(words);
+            for (int j = 0; j < table[t].length(); j++)
+            {
+                if (i==0) {
+                    string newWord = "";
+                    newWord+=table[t][j];
+                    words.push_back(newWord);
+                }
+                else
+                {
+                    for (int k = 0; k < tempWords.size(); k++) {
+                        string newWord = tempWords[k];
+                        newWord += table[t][j];
+                        words.push_back(newWord);
+                    }
+                }
+            }
+        }
+        return words;
+    }
     //20 有效的括号
     bool isValid(string s) {
         int l = s.length();
@@ -357,6 +416,76 @@ public:
             return -1;
         }
     }
+    int divide(int dividend, int divisor) {
+        if (dividend == 0)return 0;
+        if (dividend == -2147483648 && divisor == 1)return -2147483648;
+        int result = 0;
+        if (dividend < 0 && divisor < 0)
+        {
+            if (dividend > divisor)return 0;
+            int d = dividend;
+            while (d <= divisor&&result< 2147483647) {
+                result++;
+                d -=divisor;
+            }
+        }
+        else if (dividend > 0 && divisor > 0)
+        {
+            if (dividend < divisor)return 0;
+            int d = dividend;
+            while (d >= divisor && result < 2147483647) {
+                result++;
+                d -= divisor;
+            }            
+        }
+        else if (dividend < 0 && divisor > 0)
+        {
+            if (dividend+ divisor >0) return 0;
+            int d = dividend;
+            while (d <= 0 && result > -2147483648) {
+                result--;
+                d += divisor;
+            }
+            result++;
+        }
+        else if (dividend > 0 && divisor < 0)
+        {
+            if (dividend+divisor < 0) return 0;
+            int d = dividend;
+            while (d >= 0&& result > -2147483648) {
+                result--;
+                d += divisor;
+            }
+            result++;
+        }
+        return result;
+    }
+    //31 下一个排列
+    void nextPermutation(vector<int>& nums) {
+        int flag = 0;
+        if (nums.size() == 1)return;
+        for (int i = nums.size() - 1; i > 0; i--) {
+            if (nums[i - 1] < nums[i])
+            {
+                flag = i;
+                break;
+            }
+        }
+        if (flag == 0)
+        {
+            std::reverse(nums.begin(), nums.end());
+            return;
+        }
+        for (int i = nums.size() - 1; i >= flag; i--) {
+            if (nums[flag-1] < nums[i]) {
+                int temp = nums[flag-1];
+                nums[flag-1] = nums[i];
+                nums[i] = temp;
+                break;
+            }
+        }
+        std::reverse(nums.begin()+flag,nums.end());
+    }
     //35 搜索插入位置
     int searchInsert(vector<int>& nums, int target) {
         int low = 0;
@@ -375,6 +504,40 @@ public:
         }
         return low;
     }
+    //36 有效的数独
+    bool isValidSudoku(vector<vector<char>>& board) {
+        int check1[9] = { 0,0,0,0,0,0,0,0,0 };
+        int check2[9] = { 0,0,0,0,0,0,0,0,0 };
+        int check3[9] = { 0,0,0,0,0,0,0,0,0 };
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++) {
+                if (board[j][i] != '.') {
+                    int t = board[j][i] - '0';
+                    t--;
+                    if (check1[t] >= 1)return false;
+                    else check1[t]++;
+                }
+                if (board[i][j] != '.') {
+                    int t = board[i][j] - '0';
+                    t--;
+                    if (check2[t] >= 1)return false;
+                    else check2[t]++;
+                }
+                if (board[3 * (i % 3) + j / 3][3 * (i / 3) + j % 3] != '.') {
+                    int t = board[3 * (i % 3) + j / 3][3 * (i / 3) + j % 3] - '0';
+                    t--;
+                    if (check3[t] >= 1)return false;
+                    else check3[t]++;
+                }
+            }
+            fill(check1, check1 + 9, 0);
+            fill(check2, check2 + 9, 0);
+            fill(check3, check3 + 9, 0);
+        }
+        return true;
+    }
+
     //58 最后一个单词的长度
     int lengthOfLastWord(string s) {
             size_t first = s.find_first_not_of(' ');
@@ -480,9 +643,9 @@ public:
 int main()
 {
     Solution solution;
-    vector<int> ss = { 1,8,6,2,5,4,8,3,7 };
-    string s = " luffy is still joyboy ";
-    cout << solution.lengthOfLastWord(s);
+    vector<vector<char>>  test = { {'.', '.', '.', '.', '.', '3', '2', '.', '4'}, {'.', '.', '.', '.', '2', '.', '.', '.', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'}, {'.', '6', '.', '.', '.', '.', '7', '.', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'}, {'.', '.', '.', '.', '9', '.', '.', '.', '.'}, {'3', '.', '.', '1', '.', '.', '.', '8', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'}, {'.', '.', '.', '.', '.', '.', '.', '.', '.'} };
+    solution.isValidSudoku(test);
+    //solution.divide(7,-3);
     return 0;
 }
 
