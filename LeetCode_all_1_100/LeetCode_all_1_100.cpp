@@ -497,7 +497,6 @@ public:
         else  // 旋转点在左半部
             return findRotateLoc(nums, left, mid);
     }
-
     int findLoc(vector<int>& nums, int left, int right, int target) {
         if (left > right)
             return -1;
@@ -510,8 +509,6 @@ public:
             return findLoc(nums, mid + 1, right, target);
     }
     int search(vector<int>& nums, int target) {
-        if (nums.size() == 1 && nums[0] == target)return 0;
-        if (nums.size() == 1 && nums[0] != target)return -1;
         int left = 0;
         int right = nums.size() - 1;
         //先找旋转点
@@ -520,7 +517,7 @@ public:
         //判断target在旋转点左侧还是右侧后再次二分
         if (rotateLoc == 0)  // 没有旋转
             return findLoc(nums, left, right, target);
-        else if (target >= nums[0] && target <= nums[rotateLoc - 1])  // 目标在左侧
+        else if (target > nums[nums.size() - 1])  // 目标在左侧
             return findLoc(nums, 0, rotateLoc - 1, target);
         else  // 目标在右侧
             return findLoc(nums, rotateLoc, right, target);
