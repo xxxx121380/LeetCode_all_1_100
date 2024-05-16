@@ -648,6 +648,19 @@ public:
         }
         return result;
     }
+    //57 插入区间
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>>result;
+        intervals.push_back(newInterval);
+        sort(intervals.begin(), intervals.end());
+        for (int i = 0; i < intervals.size(); i++) {
+            if (!result.empty() && result.back()[1] >= intervals[i][0]) {
+                result.back()[1] = max(result.back()[1], intervals[i][1]);
+            }
+            else result.push_back(intervals[i]);
+        }
+        return result;
+    }
     //58 最后一个单词的长度
     int lengthOfLastWord(string s) {
             size_t first = s.find_first_not_of(' ');
@@ -753,8 +766,9 @@ public:
 int main()
 {
     Solution solution;
-    vector<vector<int>>  test = { {1,2,3,4} ,{5,6,7,8},{9,10,11,12},{13,14,15,16} };
-    solution.spiralOrder(test);
+    vector<vector<int>>  test = { {1,3} ,{6,9}};
+    vector<int> newi = { 2,5 };
+    solution.insert(test,newi);
     //solution.divide(7,-3);
     return 0;
 }
