@@ -648,6 +648,16 @@ public:
         }
         return result;
     }
+    //55 跳跃游戏
+    bool canJump(vector<int>& nums) {
+        int maxrange = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            //当前格子能达到的最大距离，跑这整段能达到的二次距离
+            if (i > maxrange)return false;
+            maxrange = max(i + nums[i], maxrange);
+        }
+        return true;
+    }
     //57 插入区间
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
         vector<vector<int>>result;
@@ -767,8 +777,8 @@ int main()
 {
     Solution solution;
     vector<vector<int>>  test = { {1,3} ,{6,9}};
-    vector<int> newi = { 2,5 };
-    solution.insert(test,newi);
+    vector<int> newi = { 1,1,2,2,0,1,1 };
+    solution.canJump(newi);
     //solution.divide(7,-3);
     return 0;
 }
