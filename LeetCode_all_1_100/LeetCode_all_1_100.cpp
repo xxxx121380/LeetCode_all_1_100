@@ -255,6 +255,66 @@ public:
         }
         return maxA;
     }
+    string intToRoman(int num) {
+        string s = "";
+        if (num >= 1000) {
+            int temp = num / 1000;
+            for (int i = 0; i < temp; i++) {
+                s = s + 'M';
+            }
+            num = num % 1000;
+        }
+        int stage=0;
+        string a, b, c;
+        while (num > 0) {
+            if (num >= 100)
+            {
+                stage = 2;
+                a = "C";
+                b = "M";
+                c = "D";
+            }
+            if (num >= 10 && num < 100) {
+                stage = 1;
+                a = "X";
+                b = "C";
+                c = "L";
+            }
+            if (num >= 1 && num < 10)
+            {
+                stage = 0;
+                a = "I";
+                b = "X";
+                c = "V";
+            }
+            int t = pow(10, stage);
+            if (num >= 9*t) {
+                s = s + a+b;
+                num = num - 9*t;
+            }
+            if (num >= 5*t) {
+                s = s + c;
+                num = num - 5*t;
+                int temp = num / t;
+                for (int i = 0; i < temp; i++) {
+                    s = s + a;
+                }
+                num = num % t;
+            }
+            if (num >= 4*t) {
+                s = s + a+c;
+                num = num - 4*t;
+            }
+            if (num >= t) {
+                int temp = num / t;
+                for (int i = 0; i < temp; i++) {
+                    s = s +a;
+                }
+                num = num % t;
+            }
+        }
+        return s;
+    }
     //13 罗马数字转整数
     int romanToInt(string s) {
         unordered_map<char, int> romanMap = {
@@ -803,9 +863,10 @@ int main()
 {
     Solution solution;
     string s = " ";
+    int num = 3749;
     vector<vector<int>>  test = { {1,3} ,{6,9}};
     vector<int> newi = { 1,1,2,2,0,1,1 };
-    solution.lengthOfLongestSubstring(s);
+    solution.intToRoman(num);
     //solution.divide(7,-3);
     return 0;
 }
