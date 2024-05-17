@@ -63,6 +63,32 @@ public:
         }
         return node->next;
     }
+    //3 无重复字符的最长子串
+    int lengthOfLongestSubstring(string s) {
+        if (s.length() <= 1)return s.length();
+        int result = 0;
+        unordered_map<char, int> temp;
+        int left = 0; int right = 1;
+        temp[s[right - 1]] = 1;
+        //先+右端点，直到有重复，再+左端点，直到没重复，持续此步骤，直到右端点到达终点，左端点没重复
+        while (right < s.length()) {
+            //右侧值不重复，且可以被加入子序列
+            if (temp[s[right]] == 0) {
+                temp[s[right]] = 1;
+                right++;
+                result = max(result, right - left);
+                continue;
+            }
+            //右侧值已经出现在里面了，则从左边开始删直到没重复
+            if (temp[s[right]] == 1) {
+                result = max(result, right - left);
+                //这个时候左值一定还在里面的，直接-1就可以了
+                temp[s[left]] = 0;
+                left++;
+            }
+        }
+        return result;
+    }
     //4 寻找两个正序数组的中位数1
     double findMedianSortedArrays1(vector<int>& nums1, vector<int>& nums2) {
         int size = nums1.size() + nums2.size();
@@ -776,9 +802,10 @@ public:
 int main()
 {
     Solution solution;
+    string s = " ";
     vector<vector<int>>  test = { {1,3} ,{6,9}};
     vector<int> newi = { 1,1,2,2,0,1,1 };
-    solution.canJump(newi);
+    solution.lengthOfLongestSubstring(s);
     //solution.divide(7,-3);
     return 0;
 }
